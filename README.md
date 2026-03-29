@@ -93,7 +93,7 @@ screenshots/dashboard_1.png
 
 ### Analytics
 
-![Analytics](screenshots/analytics.png)
+screenshots/chart.png
 
 ---
 
