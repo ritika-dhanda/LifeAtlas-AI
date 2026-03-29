@@ -19,6 +19,10 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
+app.get("/", (req, res) => {
+  res.send("LifeAtlas API is running 🚀");
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/entries", entryRoutes);
 app.use("/api/ai", aiRoutes);
