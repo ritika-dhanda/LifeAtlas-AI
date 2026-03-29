@@ -88,12 +88,12 @@ LifeAtlas provides a modern productivity dashboard including:
 
 ### AI Assistant
 
-screenshots/dashboard_1.png
+![Dashboard](screenshots/dashboard_1.png)
 
 
 ### Analytics
 
-screenshots/chart.png
+![Dashboard](screenshots/chart.png)
 
 ---
 
