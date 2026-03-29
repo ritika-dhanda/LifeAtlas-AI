@@ -11,18 +11,22 @@ const aiSuggestionRoutes = require("./routes/aiSuggestionRoutes");
 
 const app = express();
 
+// middleware
 app.use(cors());
 app.use(express.json());
 
+// connect database
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
+// root route
 app.get("/", (req, res) => {
   res.send("LifeAtlas API is running 🚀");
 });
 
+// routes
 app.use("/api/auth", authRoutes);
 app.use("/api/entries", entryRoutes);
 app.use("/api/ai", aiRoutes);
