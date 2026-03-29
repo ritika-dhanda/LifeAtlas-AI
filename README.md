@@ -197,7 +197,6 @@ Deployment will be done using:
 
 Possible enhancements:
 
-* Activity heatmap calendar
 * AI habit predictions
 * Notification system
 * Export productivity reports
