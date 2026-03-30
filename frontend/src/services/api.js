@@ -1,10 +1,10 @@
-catch (err) {
+import axios from "axios";
 
-  console.error("REGISTER ERROR:", err.response || err);
+const API = axios.create({
+  baseURL: "https://lifeatlas-backend.onrender.com/api",
+  headers: {
+    "Content-Type": "application/json"
+  }
+});
 
-  setError(
-    err.response?.data?.message ||
-    "Registration failed. Try again."
-  );
-
-}
+export default API;
