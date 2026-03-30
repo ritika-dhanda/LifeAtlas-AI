@@ -36,11 +36,13 @@ function Register() {
 
     } catch (err) {
 
-  console.error("REGISTER ERROR:", err.response || err);
+  console.log("FULL ERROR:", err);
+  console.log("RESPONSE DATA:", err.response?.data);
 
   setError(
     err.response?.data?.message ||
-    "Registration failed. Try again."
+    JSON.stringify(err.response?.data) ||
+    "Registration failed"
   );
 
 }
