@@ -36,12 +36,14 @@ function Register() {
 
     } catch (err) {
 
-      setError(
-        err.response?.data?.message ||
-        "Registration failed. Try again."
-      );
+  console.error("REGISTER ERROR:", err.response || err);
 
-    }
+  setError(
+    err.response?.data?.message ||
+    "Registration failed. Try again."
+  );
+
+}
 
   };
 
