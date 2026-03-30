@@ -2,15 +2,15 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// REGISTER USER
-exports.register = async (req, res) => {
+// REGISTER
+const register = async (req, res) => {
   try {
 
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({
-        message: "All fields are required"
+        message: "All fields required"
       });
     }
 
@@ -24,13 +24,11 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({
+    const user = await User.create({
       name,
       email,
       password: hashedPassword
     });
-
-    await user.save();
 
     const token = jwt.sign(
       { id: user._id },
@@ -43,9 +41,9 @@ exports.register = async (req, res) => {
       user
     });
 
-  } catch (error) {
+  } catch (err) {
 
-    console.error("REGISTER ERROR:", error);
+    console.error(err);
 
     res.status(500).json({
       message: "Server error"
@@ -54,8 +52,8 @@ exports.register = async (req, res) => {
   }
 };
 
-// LOGIN USER
-exports.login = async (req, res) => {
+// LOGIN
+const login = async (req, res) => {
   try {
 
     const { email, password } = req.body;
@@ -87,13 +85,18 @@ exports.login = async (req, res) => {
       user
     });
 
-  } catch (error) {
+  } catch (err) {
 
-    console.error("LOGIN ERROR:", error);
+    console.error(err);
 
     res.status(500).json({
       message: "Server error"
     });
 
   }
+};
+
+module.exports = {
+  register,
+  login
 };
