@@ -5,21 +5,18 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const authRoutes = require("./routes/authRoutes");
-const entryRoutes = require("./routes/entryRoutes");
-const aiRoutes = require("./routes/aiRoutes");
-const aiSuggestionRoutes = require("./routes/aiSuggestionRoutes");
 
 const app = express();
 
 // middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // 🔴 THIS MUST EXIST BEFORE ROUTES
 
-// connect database
+// DB connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log(err));
+  .catch(err => console.error(err));
 
 // root route
 app.get("/", (req, res) => {
@@ -28,9 +25,6 @@ app.get("/", (req, res) => {
 
 // routes
 app.use("/api/auth", authRoutes);
-app.use("/api/entries", entryRoutes);
-app.use("/api/ai", aiRoutes);
-app.use("/api/ai", aiSuggestionRoutes);
 
 const PORT = process.env.PORT || 5000;
 
