@@ -43,13 +43,14 @@ console.log("REGISTER HIT", req.body);
 
   } catch (err) {
 
-    console.error(err);
+  console.error("REGISTER ERROR:", err);
 
-    res.status(500).json({
-      message: err.message
-    });
+  res.status(500).json({
+    message: err.message || "Unknown server error",
+    error: err
+  });
 
-  }
+}
 };
 
 // LOGIN
