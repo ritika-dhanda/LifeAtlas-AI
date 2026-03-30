@@ -1,7 +1,10 @@
-import axios from "axios";
+catch (err) {
 
-const API = axios.create({
-  baseURL: "https://lifeatlas-backend.onrender.com/api"
-});
+  console.error("REGISTER ERROR:", err.response || err);
 
-export default API;
+  setError(
+    err.response?.data?.message ||
+    "Registration failed. Try again."
+  );
+
+}
