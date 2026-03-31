@@ -18,7 +18,40 @@ exports.getEntries = async (req, res) => {
 
   }
 };
+// WEEKLY PROGRESS
+exports.getWeeklyProgress = async (req, res) => {
 
+  try {
+
+    const now = new Date();
+
+    const startOfWeek = new Date();
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    startOfWeek.setHours(0,0,0,0);
+
+    const weeklyEntries = await Entry.countDocuments({
+      userId: req.user.id,
+      date: { $gte: startOfWeek }
+    });
+
+    const goal = 5;
+
+    res.json({
+      goal,
+      progress: weeklyEntries
+    });
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      message: "Error calculating weekly progress"
+    });
+
+  }
+
+};
 exports.createEntry = async (req, res) => {
 
   try {
