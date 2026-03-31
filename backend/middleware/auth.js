@@ -2,33 +2,31 @@ const jwt = require("jsonwebtoken");
 
 module.exports = function (req, res, next) {
 
-  const token = req.header("Authorization");
+  const authHeader = req.header("Authorization");
 
-  if (!token) {
-
+  if (!authHeader) {
     return res.status(401).json({
-      message: "No token provided"
+      message: "No token, authorization denied"
     });
-
   }
+
+  const token = authHeader.replace("Bearer ", "");
 
   try {
 
-    const actualToken = token.split(" ")[1];
-
     const decoded = jwt.verify(
-      actualToken,
-      process.env.JWT_SECRET
+      token,
+      process.env.JWT_SECRET || "lifeatlas_secret"
     );
 
     req.user = decoded;
 
     next();
 
-  } catch (error) {
+  } catch (err) {
 
     res.status(401).json({
-      message: "Invalid token"
+      message: "Token is not valid"
     });
 
   }
