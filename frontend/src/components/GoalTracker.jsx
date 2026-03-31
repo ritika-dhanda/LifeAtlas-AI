@@ -1,41 +1,84 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import API from "../services/api";
 
-function GoalTracker(){
+function GoalTracker() {
 
-const [goal] = useState(5);
-const [progress] = useState(2);
+  const [progress, setProgress] = useState(0);
 
-return(
+  const goal = 5;
 
-<div className="bg-white p-6 rounded-xl shadow">
+  const fetchProgress = async () => {
 
-<h3 className="text-lg font-semibold">
-🎯 Weekly Goal
-</h3>
+    try {
 
-<p className="mt-2">
-Goal: {goal} activities
-</p>
+      const token = localStorage.getItem("token");
 
-<p>
-Progress: {progress}/{goal}
-</p>
+      const res = await API.get("/entries", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
 
-<div className="w-full bg-gray-200 rounded mt-2">
+      const entries = res.data;
 
-<div
-className="bg-blue-500 h-3 rounded"
-style={{width:`${(progress/goal)*100}%`}}
->
+      // Get start of week
+      const now = new Date();
+      const startOfWeek = new Date();
 
-</div>
+      startOfWeek.setDate(now.getDate() - now.getDay());
+      startOfWeek.setHours(0,0,0,0);
 
-</div>
+      // Filter only this week's entries
+      const weeklyEntries = entries.filter(entry =>
+        new Date(entry.createdAt) >= startOfWeek
+      );
 
-</div>
+      setProgress(weeklyEntries.length);
 
-);
+    } catch (err) {
+
+      console.error("GoalTracker error:", err);
+
+    }
+
+  };
+
+  useEffect(() => {
+    fetchProgress();
+  }, []);
+
+  const percent = Math.min((progress / goal) * 100, 100);
+
+  return (
+
+    <div className="bg-white p-6 rounded-xl shadow">
+
+      <h3 className="text-lg font-semibold mb-2">
+        Weekly Goal
+      </h3>
+
+      <p className="text-gray-600 mb-3">
+        Complete 5 activities this week
+      </p>
+
+      <div className="w-full bg-gray-200 h-3 rounded-full">
+
+        <div
+          className="bg-green-500 h-3 rounded-full"
+          style={{ width: `${percent}%` }}
+        />
+
+      </div>
+
+      <p className="mt-2 text-sm text-gray-500">
+        {progress}/{goal}
+      </p>
+
+    </div>
+
+  );
 
 }
 
+export default GoalTracker;
 export default GoalTracker;
