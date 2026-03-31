@@ -15,43 +15,62 @@ function WeeklyStats() {
 
   const fetchStats = async () => {
 
-    const token = localStorage.getItem("token");
+    try {
 
-    const res = await API.get("/entries", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+      const token = localStorage.getItem("token");
 
-    const entries = res.data;
+      const res = await API.get("/entries", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
 
-    const days = {
-      Mon: 0,
-      Tue: 0,
-      Wed: 0,
-      Thu: 0,
-      Fri: 0,
-      Sat: 0,
-      Sun: 0
-    };
+      const entries = res.data;
 
-    entries.forEach((entry) => {
+      // Calculate start of week
+      const now = new Date();
+      const startOfWeek = new Date();
+      startOfWeek.setDate(now.getDate() - now.getDay());
+      startOfWeek.setHours(0, 0, 0, 0);
 
-      const day = new Date(entry.createdAt)
-        .toLocaleDateString("en-US", { weekday: "short" });
+      // Filter entries from this week only
+      const weeklyEntries = entries.filter(entry =>
+        new Date(entry.createdAt) >= startOfWeek
+      );
 
-      if (days[day] !== undefined) {
-        days[day]++;
-      }
+      const days = {
+        Mon: 0,
+        Tue: 0,
+        Wed: 0,
+        Thu: 0,
+        Fri: 0,
+        Sat: 0,
+        Sun: 0
+      };
 
-    });
+      weeklyEntries.forEach((entry) => {
 
-    const chartData = Object.keys(days).map((key) => ({
-      day: key,
-      value: days[key]
-    }));
+        const day = new Date(entry.createdAt)
+          .toLocaleDateString("en-US", { weekday: "short" });
 
-    setData(chartData);
+        if (days[day] !== undefined) {
+          days[day]++;
+        }
+
+      });
+
+      const chartData = Object.keys(days).map((key) => ({
+        day: key,
+        value: days[key]
+      }));
+
+      setData(chartData);
+
+    } catch (err) {
+
+      console.error("Weekly stats error:", err);
+
+    }
 
   };
 
