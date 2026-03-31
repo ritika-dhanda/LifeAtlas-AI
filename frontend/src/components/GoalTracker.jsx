@@ -81,4 +81,3 @@ function GoalTracker() {
 }
 
 export default GoalTracker;
-export default GoalTracker;
