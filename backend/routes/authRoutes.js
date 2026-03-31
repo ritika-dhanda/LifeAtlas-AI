@@ -1,83 +1,22 @@
-import { useEffect, useState } from "react";
-import API from "../services/api";
+const auth = require("../middleware/auth");
+const User = require("../models/User");
 
-function GoalTracker() {
+router.get("/profile", auth, async (req, res) => {
 
-  const [progress, setProgress] = useState(0);
+  try {
 
-  const goal = 5;
+    const user = await User.findById(req.user.id).select("-password");
 
-  const fetchProgress = async () => {
+    res.json(user);
 
-    try {
+  } catch (err) {
 
-      const token = localStorage.getItem("token");
+    console.error(err);
 
-      const res = await API.get("/entries", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+    res.status(500).json({
+      message: "Server error"
+    });
 
-      const entries = res.data;
+  }
 
-      // Get start of week
-      const now = new Date();
-      const startOfWeek = new Date();
-
-      startOfWeek.setDate(now.getDate() - now.getDay());
-      startOfWeek.setHours(0,0,0,0);
-
-      // Filter only this week's entries
-      const weeklyEntries = entries.filter(entry =>
-        new Date(entry.createdAt) >= startOfWeek
-      );
-
-      setProgress(weeklyEntries.length);
-
-    } catch (err) {
-
-      console.error("GoalTracker error:", err);
-
-    }
-
-  };
-
-  useEffect(() => {
-    fetchProgress();
-  }, []);
-
-  const percent = Math.min((progress / goal) * 100, 100);
-
-  return (
-
-    <div className="bg-white p-6 rounded-xl shadow">
-
-      <h3 className="text-lg font-semibold mb-2">
-        Weekly Goal
-      </h3>
-
-      <p className="text-gray-600 mb-3">
-        Complete 5 activities this week
-      </p>
-
-      <div className="w-full bg-gray-200 h-3 rounded-full">
-
-        <div
-          className="bg-green-500 h-3 rounded-full"
-          style={{ width: `${percent}%` }}
-        />
-
-      </div>
-
-      <p className="mt-2 text-sm text-gray-500">
-        {progress}/{goal}
-      </p>
-
-    </div>
-
-  );
-
-}
-
-export default GoalTracker;
+});
