@@ -19,14 +19,25 @@ function AIWeeklyReport() {
 
       const entries = res.data;
 
-      if (entries.length === 0) {
+      // Get start of current week
+      const now = new Date();
+      const startOfWeek = new Date();
+      startOfWeek.setDate(now.getDate() - now.getDay());
+      startOfWeek.setHours(0,0,0,0);
+
+      // Filter only this week's entries
+      const weeklyEntries = entries.filter(entry =>
+        new Date(entry.date) >= startOfWeek
+      );
+
+      if (weeklyEntries.length === 0) {
         setReport("No activities logged this week.");
         return;
       }
 
       const categories = {};
 
-      entries.forEach(e => {
+      weeklyEntries.forEach(e => {
         categories[e.category] =
           (categories[e.category] || 0) + 1;
       });
@@ -37,7 +48,7 @@ function AIWeeklyReport() {
         );
 
       setReport(
-        `You logged ${entries.length} activities this week. 
+        `You logged ${weeklyEntries.length} activities this week.
 Your most active category is ${mostActive}.`
       );
 
