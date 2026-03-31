@@ -15,7 +15,7 @@ const {
 router.post("/", authMiddleware, createEntry);
 
 router.get("/", authMiddleware, getEntries);
-
+router.get("/weekly-progress", authMiddleware, getWeeklyProgress);
 router.put("/:id", authMiddleware, updateEntry);
 
 router.delete("/:id", authMiddleware, deleteEntry);
