@@ -5,13 +5,13 @@ function Profile() {
 
   const [user, setUser] = useState(null);
 
-  const fetchUser = async () => {
+  const fetchProfile = async () => {
 
     try {
 
       const token = localStorage.getItem("token");
 
-      const res = await API.get("/auth/me", {
+      const res = await API.get("/auth/profile", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -19,44 +19,50 @@ function Profile() {
 
       setUser(res.data);
 
-    } catch (error) {
+    } catch (err) {
 
-      console.error("Failed to load user", error);
+      console.error(err);
 
     }
 
   };
 
   useEffect(() => {
-    fetchUser();
+    fetchProfile();
   }, []);
 
   if (!user) {
-    return <p className="text-gray-500">Loading profile...</p>;
+
+    return (
+
+      <div className="p-8">
+        <h2 className="text-xl">Loading profile...</h2>
+      </div>
+
+    );
+
   }
 
   return (
 
-    <div className="max-w-lg bg-white p-6 rounded-xl shadow">
+    <div className="p-8">
 
-      <h2 className="text-2xl font-bold mb-4">
+      <h1 className="text-2xl font-bold mb-4">
         Profile
-      </h2>
+      </h1>
 
-      <div className="space-y-3">
+      <div className="bg-white p-6 rounded-xl shadow max-w-md">
 
-        <p>
+        <p className="mb-2">
           <strong>Name:</strong> {user.name}
         </p>
 
-        <p>
+        <p className="mb-2">
           <strong>Email:</strong> {user.email}
         </p>
 
-        <p className="text-sm text-gray-500">
-          Account created:
-          {" "}
-          {new Date(user.createdAt).toLocaleDateString()}
+        <p>
+          <strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}
         </p>
 
       </div>
