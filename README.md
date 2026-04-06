@@ -181,28 +181,29 @@ LifeAtlas
 
 ---
 
-# 🌍 Live Demo
+## Future Enhancements
+Planned improvements for LifeAtlas include:
 
-Coming soon 🚀
+Cloud deployment (Render / Vercel)
+Google OAuth login
+AI habit prediction using ML models
+Personalized productivity coaching
+Goal-based tracking system
+Calendar integration
+Mobile-friendly UI
+Push notifications for habit reminders
+Export activity reports
 
-Deployment will be done using:
+## Learning Outcomes
+This project helped develop practical experience with:
 
-* **Frontend → Vercel**
-* **Backend → Render**
-* **Database → MongoDB Atlas**
-
----
-
-# 📈 Future Improvements
-
-Possible enhancements:
-
-* AI habit predictions
-* Notification system
-* Export productivity reports
-* Multi-user analytics
-
----
+Full-stack MERN architecture
+REST API development
+JWT authentication
+MongoDB schema design
+React component architecture
+Data visualization
+AI-assisted features in web applications
 
 # 👨‍💻 Author
 
